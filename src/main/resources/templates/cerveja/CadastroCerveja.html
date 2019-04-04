@@ -130,7 +130,7 @@
                         	<input id="pload-select" type="file" accept=".jpeg, .jpg, .png">
                         </a>.
                     </div>
-									
+						suiq
 				</div>
 			</div>
 			
@@ -142,13 +142,15 @@
 	</div>
 
 	<div th:replace="estilo/CadastroRapidoEstilo :: modal"></div>
+	<th:block th:replace="hbs/FotoCerveja"></th:block>
 </section>
 
 <th:block layout:fragment="javascript-extra">
 	<script th:src="@{/javascripts/estilo.cadastro-rapido.js}"></script>
 	<script th:src="@{/javascripts/vendors/uikit.min.js}"></script>
 	<script th:src="@{/javascripts/vendors/upload.min.js}"></script>
-	
+	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
+
 	<script>
 	$(function() {
 		var settings = {
