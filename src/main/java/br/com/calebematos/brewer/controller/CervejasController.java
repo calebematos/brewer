@@ -24,30 +24,41 @@ public class CervejasController {
 
 	@Autowired
 	private EstiloRepository estiloRepository;
-	
+
 	@Autowired
 	private CervejaService cervejaService;
-	
+
 	@GetMapping("/novo")
 	public ModelAndView novo(Cerveja cerveja) {
 		ModelAndView mv = new ModelAndView("cerveja/CadastroCerveja");
 		mv.addObject("sabores", Sabor.values());
 		mv.addObject("estilos", estiloRepository.findAll());
 		mv.addObject("origens", Origem.values());
-		
+
 		return mv;
 	}
-	
+
 	@PostMapping("/novo")
-	public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes) {
-		if(result.hasErrors()) {
+	public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model,
+			RedirectAttributes attributes) {
+		if (result.hasErrors()) {
 			return novo(cerveja);
 		}
-		
+
 		cervejaService.salvar(cerveja);
 		attributes.addFlashAttribute("mensagem", "Cerveja salva com sucesso!");
-		
+
 		return new ModelAndView("redirect:/cervejas/novo");
+	}
+
+	@GetMapping
+	public ModelAndView pesquisar() {
+		ModelAndView mv = new ModelAndView("cerveja/PesquisaCervejas");
+		mv.addObject("sabores", Sabor.values());
+		mv.addObject("estilos", estiloRepository.findAll());
+		mv.addObject("origens", Origem.values());
+		mv.addObject("cervejas", cervejaService.pesquisar());
+		return mv;
 	}
 
 }

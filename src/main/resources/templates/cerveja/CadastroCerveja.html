@@ -16,11 +16,21 @@
 <section layout:fragment="conteudo">
 
 
-	<div class="page-header">
+<div class="page-header">
 		<div class="container-fluid">
-			<h1>
-				Cadastro de cerveja
-			</h1>
+			<div class="row">
+				<div class="col-sm-10">
+					<h1>Cadastro de cerveja</h1>
+				</div>
+			
+				<div class="col-sm-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/cervejas}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -32,24 +42,24 @@
 		<brewer:message/>
 			
 			<div class="row">
-				<div class="col-sm-2  form-group" brewer:classforerror="sku">
+				<div class="col-sm-2  form-group  bw-required" brewer:classforerror="sku">
 					<label for="sku" class="control-label">SKU</label>
 					<input id="sku" type="text" class="form-control" th:field="*{sku}"/>
 				</div>
 				
-				<div class="col-sm-10  form-group" brewer:classforerror="nome">
+				<div class="col-sm-10  form-group  bw-required" brewer:classforerror="nome">
 					<label for="nome" class="control-label">Nome</label>
 					<input id="nome" type="text" class="form-control" th:field="*{nome}"/>
 				</div>
 			</div>
 	
-			<div class="form-group" brewer:classforerror="descricao"> 
+			<div class="form-group  bw-required" brewer:classforerror="descricao"> 
 				<label for="descricao" class="control-label">Descrição</label>
 				<textarea id="descricao" rows="3" class="form-control" th:field="*{descricao}"></textarea>
 			</div>
 	
 			<div class="row">
-				<div class="col-sm-3  form-group" brewer:classforerror="estilo">
+				<div class="col-sm-3  form-group  bw-required" brewer:classforerror="estilo">
 					<label for="estilo" class="control-label">Estilo</label>
 					<div class="bw-field-action">
 						<select id="estilo" class="form-control" th:field="*{estilo}">
@@ -65,7 +75,7 @@
 					</div>
 				</div>
 				
-				<div class="col-sm-3  form-group" brewer:classforerror="sabor">
+				<div class="col-sm-3  form-group  bw-required" brewer:classforerror="sabor">
 					<label for="sabor" class="control-label">Sabor</label>
 					<select id="sabor" class="form-control" th:field="*{sabor}">
 						<option value="">Selecione o sabor</option>
@@ -73,7 +83,7 @@
 					</select>
 				</div>
 				
-				<div class="col-sm-3  form-group" brewer:classforerror="teorAlcoolico">
+				<div class="col-sm-3  form-group  bw-required" brewer:classforerror="teorAlcoolico">
 					<label for="teorAlcoolico" class="control-label">Teor alcoólico</label>
 					<div class="input-group">
 						<input id="teorAlcoolico" type="text" class="form-control  js-decimal" th:field="*{teorAlcoolico}"/>
@@ -81,7 +91,7 @@
 					</div>
 				</div>
 				
-				<div class="col-lg-3 col-sm-6  form-group" brewer:classforerror="origem">
+				<div class="col-lg-3 col-sm-6  form-group  bw-required" brewer:classforerror="origem">
 					<label for="origo" class="control-label">Origem</label>
 					<div>
 						<th:block th:each="origem : ${origens}">
@@ -95,7 +105,7 @@
 			</div>
 			
 			<div class="row">
-				<div class="col-sm-3  form-group" brewer:classforerror="valor">
+				<div class="col-sm-3  form-group  bw-required" brewer:classforerror="valor">
 					<label for="valor" class="control-label">Valor</label>
 					<div class="input-group">
 						<div class="input-group-addon">R$</div>
@@ -103,7 +113,7 @@
 					</div>
 				</div>
 				
-				<div class="col-sm-3  form-group" brewer:classforerror="comissao">
+				<div class="col-sm-3  form-group  bw-required" brewer:classforerror="comissao">
 					<label for="comissao" class="control-label">Comissão</label>
 					<div class="input-group">
 						<input id="comissao" type="text" class="form-control  js-decimal" th:field="*{comissao}"/>
@@ -111,7 +121,7 @@
 					</div>
 				</div>
 				
-				<div class="col-sm-3  form-group" brewer:classforerror="quantidadeEstoque">
+				<div class="col-sm-3  form-group  bw-required" brewer:classforerror="quantidadeEstoque">
 					<label for="estoque" class="control-label">Estoque</label>
 					<input id="estoque" type="text" class="form-control  js-plain" th:field="*{quantidadeEstoque}"/>
 				</div>
@@ -123,14 +133,17 @@
 					<input type="hidden" th:field="*{contentType}">
 					
 					<label class="control-label">Foto</label>
-					<div id="upload-drop" class="bw-upload">
-                        <i class="glyphicon glyphicon-cloud-upload"></i> 
-                        <span>Arraste a foto aqui</span> 
-                        <a class="bw-upload-form-file">selecione
-                        	<input id="pload-select" type="file" accept=".jpeg, .jpg, .png">
-                        </a>.
+					
+					<div class="js-container-foto-cerveja" th:attr="data-url-fotos=@{/fotos}">
+						<div id="upload-drop" class="bw-upload" >
+	                        <i class="glyphicon glyphicon-cloud-upload"></i> 
+	                        <span>Arraste a foto aqui</span> 
+	                        <a class="bw-upload-form-file">selecione
+	                        	<input id="pload-select" type="file" accept=".jpeg, .jpg, .png">
+	                        </a>.
+	                    </div>
                     </div>
-						suiq
+                    
 				</div>
 			</div>
 			
@@ -147,28 +160,11 @@
 
 <th:block layout:fragment="javascript-extra">
 	<script th:src="@{/javascripts/estilo.cadastro-rapido.js}"></script>
+	<script th:src="@{/javascripts/cerveja.upload-foto.js}"></script>
 	<script th:src="@{/javascripts/vendors/uikit.min.js}"></script>
 	<script th:src="@{/javascripts/vendors/upload.min.js}"></script>
 	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
 
-	<script>
-	$(function() {
-		var settings = {
-				type: 'json',
-				filelimit: 1,
-				allow: '*.(jpg|jpeg|png)',
-				action: '/brewer/fotos',
-				complete: function(response){
-					console.log('resposta', response);
-					$('input[name=foto]').val(response.nome);
-					$('input[name=contentType]').val(response.contentType);
-				}
-		};
-		
-		UIkit.uploadSelect($('#upload-select'), settings);
-		UIkit.uploadDrop($('#upload-drop'), settings);
-	});
-	</script>
 </th:block>
 
 </body>	  
