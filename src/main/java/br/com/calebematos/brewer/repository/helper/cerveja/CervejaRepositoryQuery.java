@@ -1,4 +1,4 @@
-package br.com.calebematos.brewer.repository.cerveja;
+package br.com.calebematos.brewer.repository.helper.cerveja;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
