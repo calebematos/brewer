@@ -2,8 +2,8 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorator="'layout/LayoutPadrao'"
-	  xmlns:brewew="">
+	  layout:decorate="~{layout/LayoutPadrao}"
+	  xmlns:brewer="">
 
 <head>
 	<title>Cadastro de cerveja</title>
@@ -26,7 +26,7 @@
 				<div class="col-sm-2">
 					<div class="aw-page-header-controls">
 						<a class="btn  btn-default" th:href="@{/cervejas}">
-							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+							<i class="glyphicon  glyphicon-search"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
 						</a>
 					</div>
 				</div>
@@ -36,11 +36,9 @@
 
 	<div class="container-fluid">
 	
-	
 		<form method="POST" th:object="${cerveja}" class="form-vertical">
-	
-		<brewer:message/>
-			
+			<brewer:message/>
+
 			<div class="row">
 				<div class="col-sm-2  form-group  bw-required" brewer:classforerror="sku">
 					<label for="sku" class="control-label">SKU</label>
