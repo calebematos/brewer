@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.calebematos.brewer.controller.page.PageWrapper;
-import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.model.Cliente;
 import br.com.calebematos.brewer.model.TipoPessoa;
 import br.com.calebematos.brewer.repository.EstadoRepository;
@@ -56,6 +55,7 @@ public class ClientesController {
 		return new ModelAndView("redirect:/clientes/novo");
 	}
 
+	@GetMapping
 	public ModelAndView pesquisar(ClienteFilter clienteFilter, BindingResult result,
 			@PageableDefault(size = 2) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("cliente/PesquisaCliente");
