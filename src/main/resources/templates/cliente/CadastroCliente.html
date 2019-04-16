@@ -27,14 +27,14 @@
 			<brewer:message/>
 			
 			<div class="row">
-				<div class="form-group  col-sm-12  bw-required">
-					<label for="nome">Nome</label>
+				<div class="form-group  col-sm-12  bw-required" brewer:classforerror="nome">
+					<label for="nome" class="control-label">Nome</label>
 					<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
 				</div>
 			</div>
 					
 			<div class="row">
-				<div class="col-sm-4  form-group  bw-required">
+				<div class="col-sm-4  form-group  bw-required" brewer:classforerror="tipoPessoa">
 					<label for="tipoPessoa" class="control-label">Tipo pessoa</label>
 					<div>
 						<th:block th:each="tipoPessoa : ${tiposPessoa}">
@@ -48,7 +48,7 @@
 					</div>
 				</div>
 				
-				<div class="col-sm-8  form-group">
+				<div class="col-sm-8  form-group  bw-required" brewer:classforerror="cpfOuCnpj">
 					<label for="cpfcnpj" class="control-label">CNPJ/CPF</label>
 					<input id="cpfcnpj" type="text" class="form-control" th:field="*{cpfOuCnpj}" disabled/>
 				</div>
@@ -60,7 +60,7 @@
 					<input id="telefone" type="text" class="form-control  js-phone-number" th:field="*{telefone}"/>
 				</div>
 				
-				<div class="col-sm-8  form-group">
+				<div class="col-sm-8  form-group" brewer:classforerror="email">
 					<label for="email" class="control-label">E-mail</label>
 					<input id="email" type="email" class="form-control" th:field="*{email}"/>
 				</div>
@@ -91,8 +91,8 @@
 				
 				<div class="col-sm-4  form-group">
 					<label for="estado" class="control-label">Estado</label>
-					<select id="estado" class="form-control" >
-						<option>Selecione o estado</option>
+					<select id="estado" class="form-control" th:field="*{endereco.estado}">
+						<option value="">Selecione o estado</option>
 						<option th:each="estado : ${estados}" th:value="${estado.codigo}" th:text="${estado.nome}"></option>
 					</select>
 				</div>
@@ -100,6 +100,7 @@
 				<div class="col-sm-4  form-group">
 					<label for="cidade" class="control-label">Cidade</label>
 					<div class="bw-field-action">
+					<input type="hidden" id="inputHiddenCidadeSelecionada" th:value="*{endereco.cidade} != null ? *{endereco.cidade.codigo}">
 						<select id="cidade" class="form-control" data:url="@{/cidades}" th:field="*{endereco.cidade}"></select>
 						<div class="bw-field-action__icon  js-img-loading" style="display:none">
 							<img th:src="@{/images/mini-loading.gif}">

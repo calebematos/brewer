@@ -6,9 +6,11 @@ import java.util.Locale;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
@@ -30,6 +32,7 @@ import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDiale
 
 import br.com.calebematos.brewer.controller.CervejasController;
 import br.com.calebematos.brewer.converter.CidadeConverter;
+import br.com.calebematos.brewer.converter.EstadoConverter;
 import br.com.calebematos.brewer.converter.EstiloConverter;
 import br.com.calebematos.brewer.thymeleaf.BrewerDialect;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
@@ -86,6 +89,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
 		conversionService.addConverter(new EstiloConverter());
 		conversionService.addConverter(new CidadeConverter());
+		conversionService.addConverter(new EstadoConverter());
 
 		NumberStyleFormatter bigDecimalFormatter = new NumberStyleFormatter("#,##0.00");
 		conversionService.addFormatterForFieldType(BigDecimal.class, bigDecimalFormatter);
@@ -99,6 +103,15 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	@Bean
 	public LocaleResolver localeResolver() {
 		return new FixedLocaleResolver(new Locale("pt", "BR"));
+	}
+	
+
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource bundle = new ReloadableResourceBundleMessageSource();
+		bundle.setBasename("classpath:/messages");
+		bundle.setDefaultEncoding("UTF-8"); // http://www.utf8-chartable.de/
+		return bundle;
 	}
 
 }
