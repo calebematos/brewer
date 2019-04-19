@@ -6,6 +6,7 @@ import javax.servlet.ServletRegistration.Dynamic;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import br.com.calebematos.brewer.config.JPAConfig;
+import br.com.calebematos.brewer.config.SecurityConfig;
 import br.com.calebematos.brewer.config.ServiceConfig;
 import br.com.calebematos.brewer.config.WebConfig;
 
@@ -13,7 +14,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { JPAConfig.class, ServiceConfig.class };
+		return new Class<?>[] { JPAConfig.class, ServiceConfig.class , SecurityConfig.class};
 	}
 
 	@Override
