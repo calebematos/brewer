@@ -58,7 +58,7 @@ public class ClientesController {
 	@GetMapping
 	public ModelAndView pesquisar(ClienteFilter clienteFilter, BindingResult result,
 			@PageableDefault(size = 2) Pageable pageable, HttpServletRequest httpServletRequest) {
-		ModelAndView mv = new ModelAndView("cliente/PesquisaCliente");
+		ModelAndView mv = new ModelAndView("cliente/PesquisaClientes");
 		PageWrapper<Cliente> pagina = new PageWrapper<>(clienteService.filtrar(clienteFilter, pageable),
 				httpServletRequest);
 		mv.addObject("pagina", pagina);

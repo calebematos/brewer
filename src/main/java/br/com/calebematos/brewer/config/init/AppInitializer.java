@@ -1,5 +1,6 @@
 package br.com.calebematos.brewer.config.init;
 
+import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
 
@@ -25,6 +26,11 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	@Override
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
+	}
+	
+	@Override
+	protected Filter[] getServletFilters() {
+		return new Filter[] {};
 	}
 	
 	@Override
