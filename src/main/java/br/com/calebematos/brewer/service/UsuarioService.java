@@ -3,6 +3,8 @@ package br.com.calebematos.brewer.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import br.com.calebematos.brewer.model.Usuario;
 import br.com.calebematos.brewer.repository.UsuarioRepository;
+import br.com.calebematos.brewer.repository.filter.UsuarioFilter;
 import br.com.calebematos.brewer.service.exception.SenhaObrigatoriaUsuarioException;
 import br.com.calebematos.brewer.service.exception.UsuarioExistenteException;
 
@@ -39,5 +42,10 @@ public class UsuarioService {
 		}
 
 		return usuarioRepository.save(usuario);
+	}
+
+	public Page<Usuario> filtrar(UsuarioFilter filtro, Pageable pageable) {
+		
+		return usuarioRepository.filtrar(filtro, pageable);
 	}
 }
