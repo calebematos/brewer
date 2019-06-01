@@ -4,6 +4,8 @@ import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
 
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.HttpPutFormContentFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import br.com.calebematos.brewer.config.JPAConfig;
@@ -30,7 +32,13 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	
 	@Override
 	protected Filter[] getServletFilters() {
-		return new Filter[] {};
+		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+		characterEncodingFilter.setEncoding("UTF-8");
+		characterEncodingFilter.setForceEncoding(true);
+		
+		HttpPutFormContentFilter httpPutFormContentFilter = new  HttpPutFormContentFilter();
+		
+		return new Filter[] { characterEncodingFilter, httpPutFormContentFilter };
 	}
 	
 	@Override

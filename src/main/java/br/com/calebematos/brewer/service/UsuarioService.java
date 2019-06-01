@@ -48,4 +48,9 @@ public class UsuarioService {
 		
 		return usuarioRepository.filtrar(filtro, pageable);
 	}
+
+	@Transactional
+	public void alterarStatus(Long[] codigos, StatusUsuario statusUsuario) {
+		statusUsuario.executar(codigos, usuarioRepository);
+	}
 }

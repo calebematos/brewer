@@ -6,11 +6,15 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -18,6 +22,7 @@ import br.com.calebematos.brewer.controller.page.PageWrapper;
 import br.com.calebematos.brewer.model.Usuario;
 import br.com.calebematos.brewer.repository.GrupoRepository;
 import br.com.calebematos.brewer.repository.filter.UsuarioFilter;
+import br.com.calebematos.brewer.service.StatusUsuario;
 import br.com.calebematos.brewer.service.UsuarioService;
 import br.com.calebematos.brewer.service.exception.SenhaObrigatoriaUsuarioException;
 import br.com.calebematos.brewer.service.exception.UsuarioExistenteException;
@@ -61,13 +66,18 @@ public class UsuariosController {
 	
 	@GetMapping
 	public ModelAndView pesquisar(UsuarioFilter usuarioFilter, BindingResult result,
-			@PageableDefault(size = 2) Pageable pageable, HttpServletRequest httpServletRequest) {
+			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("usuario/PesquisaUsuarios");
+		mv.addObject("grupos", grupoRepository.findAll());
 		PageWrapper<Usuario> pagina = new PageWrapper<>(usuarioService.filtrar(usuarioFilter, pageable),
 				httpServletRequest);
 		mv.addObject("pagina", pagina);
-		mv.addObject("grupos", grupoRepository.findAll());
 		return mv;
 	}
 	
+	@PutMapping("/status")
+	@ResponseStatus(HttpStatus.OK)
+	public void atualizarStatus(@RequestParam("codigos[]") Long[] codigos, @RequestParam("status") StatusUsuario statusUsuario) {
+		usuarioService.alterarStatus(codigos, statusUsuario);
+	}
 }

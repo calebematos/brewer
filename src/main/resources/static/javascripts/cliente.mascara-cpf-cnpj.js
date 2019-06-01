@@ -1,6 +1,7 @@
 var Brewer = Brewer || {};
 
 Brewer.MascaraCpfCnpj = (function(){
+	
 	function MascaraCpfCnpj(){
 		this.radioTipoPessoa = $('.js-radio-tipo-pessoa');
 		this.labelCpfCnpj = $('[for=cpfcnpj]');
