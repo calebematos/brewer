@@ -22,6 +22,8 @@ import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 import org.hibernate.validator.group.GroupSequenceProvider;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.calebematos.brewer.model.validation.ClienteGroupSequenceProvider;
 import br.com.calebematos.brewer.model.validation.group.CnpjGroup;
 import br.com.calebematos.brewer.model.validation.group.CpfGroup;
@@ -57,6 +59,7 @@ public class Cliente implements Serializable {
 	@Email
 	private String email;
 
+	@JsonIgnore
 	@Embedded
 	private Endereco endereco;
 	

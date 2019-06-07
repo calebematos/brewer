@@ -1,5 +1,7 @@
 package br.com.calebematos.brewer.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -12,10 +14,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.calebematos.brewer.controller.page.PageWrapper;
+import br.com.calebematos.brewer.dto.CervejaDTO;
 import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.model.Origem;
 import br.com.calebematos.brewer.model.Sabor;
@@ -69,4 +73,8 @@ public class CervejasController {
 		return mv;
 	}
 
+	@GetMapping("/filtrar")
+	public @ResponseBody List<CervejaDTO> pesquisar(String skuOuNome){
+		return cervejaService.pesquisar(skuOuNome);
+	}
 }

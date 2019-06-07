@@ -1,5 +1,6 @@
 package br.com.calebematos.brewer.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,9 @@ public class ClienteService {
 
 	public Page<Cliente> filtrar(ClienteFilter clienteFilter, Pageable pageable) {
 		return clienteRepository.filtrar(clienteFilter, pageable);
+	}
+
+	public List<Cliente> pesquisarPorNome(String nome) {
+		return clienteRepository.findByNomeStartingWithIgnoreCase(nome);
 	}
 }

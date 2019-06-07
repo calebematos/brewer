@@ -7,4 +7,5 @@ import br.com.calebematos.brewer.repository.helper.cerveja.CervejaRepositoryQuer
 
 public interface CervejaRepository extends JpaRepository<Cerveja, Long>, CervejaRepositoryQuery{
 
+
 }
