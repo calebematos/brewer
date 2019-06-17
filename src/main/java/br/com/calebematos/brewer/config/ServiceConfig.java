@@ -5,12 +5,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import br.com.calebematos.brewer.service.CervejaService;
-import br.com.calebematos.brewer.session.TabelaItensVenda;
+import br.com.calebematos.brewer.session.TabelasItensSession;
 import br.com.calebematos.brewer.storage.FotoStorage;
 import br.com.calebematos.brewer.storage.local.FotoStorageLocal;
 
 @Configuration
-@ComponentScan(basePackageClasses = { CervejaService.class, TabelaItensVenda.class })
+@ComponentScan(basePackageClasses = { CervejaService.class, TabelasItensSession.class })
 public class ServiceConfig {
 
 	

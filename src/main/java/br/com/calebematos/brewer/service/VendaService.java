@@ -8,32 +8,31 @@ import org.springframework.stereotype.Service;
 import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.model.ItemVenda;
 import br.com.calebematos.brewer.repository.CervejaRepository;
-import br.com.calebematos.brewer.session.TabelaItensVenda;
+import br.com.calebematos.brewer.session.TabelasItensSession;
 
 @Service
 public class VendaService {
 
 	@Autowired
 	private CervejaRepository cervejaRepository;
-	
+
 	@Autowired
-	private TabelaItensVenda itensVenda;
+	private TabelasItensSession tabelaItens;
 
-	public List<ItemVenda> adicionarItem(Long codigoCerveja) {
+	public List<ItemVenda> adicionarItem(String uuid, Long codigoCerveja) {
 		Cerveja cerveja = cervejaRepository.findOne(codigoCerveja);
-		itensVenda.adicionarItem(cerveja, 1);
-		return itensVenda.getItens();
+		tabelaItens.adicionarItem(uuid, cerveja, 1);
+		return tabelaItens.getItens(uuid);
 	}
 
-	public List<ItemVenda> alterarQuantidade(Cerveja cerveja, Integer quantidade) {
-		itensVenda.alterarQuantidadeItem(cerveja, quantidade);
-		return itensVenda.getItens();
+	public List<ItemVenda> alterarQuantidade(String uuid, Cerveja cerveja, Integer quantidade) {
+		tabelaItens.alterarQuantidadeItem(uuid, cerveja, quantidade);
+		return tabelaItens.getItens(uuid);
 	}
 
-	public List<ItemVenda> excluirItem(Cerveja cerveja) {
-		itensVenda.excluirItem(cerveja);
-		return itensVenda.getItens();
+	public List<ItemVenda> excluirItem(String uuid, Cerveja cerveja) {
+		tabelaItens.excluirItem(uuid, cerveja);
+		return tabelaItens.getItens(uuid);
 	}
-	
-	
+
 }

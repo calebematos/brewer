@@ -1,6 +1,7 @@
 package br.com.calebematos.brewer.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,25 +25,27 @@ public class VendasController {
 	private VendaService vendaService;
 	
 	@GetMapping("/nova")
-	public String nova() {
-		return "venda/CadastroVenda";
+	public ModelAndView nova() {
+		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
+		mv.addObject("uuid", UUID.randomUUID().toString());
+		return mv;
 	}
 	
 	@PostMapping("/item")
-	public ModelAndView adicionarItem(Long codigoCerveja) {
-		List<ItemVenda> itens = vendaService.adicionarItem(codigoCerveja);
+	public ModelAndView adicionarItem(Long codigoCerveja, String uuid) {
+		List<ItemVenda> itens = vendaService.adicionarItem(uuid, codigoCerveja);
 		return mvTabelaItensVenda(itens);
 	}
 	
 	@PutMapping("/item/{codigoCerveja}")
-	public ModelAndView alterarQuantidadeItem(@PathVariable("codigoCerveja") Cerveja cerveja, Integer quantidade) {
-		List<ItemVenda> itens = vendaService.alterarQuantidade(cerveja, quantidade);
+	public ModelAndView alterarQuantidadeItem(@PathVariable("codigoCerveja") Cerveja cerveja, Integer quantidade, String uuid) {
+		List<ItemVenda> itens = vendaService.alterarQuantidade(uuid, cerveja, quantidade);
 		return mvTabelaItensVenda(itens);
 	}
 	
-	@DeleteMapping("/item/{codigoCerveja}")
-	public ModelAndView excluirItem(@PathVariable("codigoCerveja") Cerveja cerveja) {
-		List<ItemVenda> itens = vendaService.excluirItem(cerveja);
+	@DeleteMapping("/item/{uuid}/{codigoCerveja}")
+	public ModelAndView excluirItem(@PathVariable String uuid, @PathVariable("codigoCerveja") Cerveja cerveja) {
+		List<ItemVenda> itens = vendaService.excluirItem(uuid, cerveja);
 		return mvTabelaItensVenda(itens);
 	}
 	

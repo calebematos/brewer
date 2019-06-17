@@ -1,4 +1,4 @@
-package br.com.calebematos.brewer.venda;
+package br.com.calebematos.brewer.session;
 
 import static org.junit.Assert.*;
 
@@ -16,7 +16,7 @@ public class TabelaItensVendaTest {
 
 	@Before
 	public void setUp() {
-		tabelaItensVenda = new TabelaItensVenda();
+		tabelaItensVenda = new TabelaItensVenda("1");
 	}
 
 	@Test
