@@ -25,9 +25,13 @@ public class VendaService {
 		return itensVenda.getItens();
 	}
 
-	public List<ItemVenda> alterarQuantidade(Long codigoCerveja, Integer quantidade) {
-		Cerveja cerveja = cervejaRepository.findOne(codigoCerveja);
+	public List<ItemVenda> alterarQuantidade(Cerveja cerveja, Integer quantidade) {
 		itensVenda.alterarQuantidadeItem(cerveja, quantidade);
+		return itensVenda.getItens();
+	}
+
+	public List<ItemVenda> excluirItem(Cerveja cerveja) {
+		itensVenda.excluirItem(cerveja);
 		return itensVenda.getItens();
 	}
 	
