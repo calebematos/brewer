@@ -1,5 +1,6 @@
 package br.com.calebematos.brewer.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,10 @@ public class VendaService {
 	public List<ItemVenda> excluirItem(String uuid, Cerveja cerveja) {
 		tabelaItens.excluirItem(uuid, cerveja);
 		return tabelaItens.getItens(uuid);
+	}
+
+	public BigDecimal obterValorTotal(String uuid) {
+		return tabelaItens.getValorTotal(uuid);
 	}
 
 }

@@ -1,24 +1,25 @@
 var Brewer = Brewer || {};
 
-Brewer.MaskMoney = (function(){
+Brewer.MaskMoney = (function() {
 	
-	function MaskMoney(){
+	function MaskMoney() {
 		this.decimal = $('.js-decimal');
 		this.plain = $('.js-plain');
-	};
+	}
 	
-	MaskMoney.prototype.enable = function(){
-		this.decimal.maskMoney({ decimal:",", thousands:"." });
-		this.plain.maskMoney({ precision : 0, thousands:"." });
-	};
+	MaskMoney.prototype.enable = function() {
+		this.decimal.maskMoney({ decimal: ',', thousands: '.' });
+		this.plain.maskMoney({ precision: 0, thousands: '.' });
+	}
 	
 	return MaskMoney;
+	
 }());
 
 Brewer.MaskPhoneNumber = (function() {
 	
-	function MaskPhoneNumber(){
-		this.inputPhoneNumber = $('.js-phone-number')
+	function MaskPhoneNumber() {
+		this.inputPhoneNumber = $('.js-phone-number');
 	}
 	
 	MaskPhoneNumber.prototype.enable = function() {
@@ -36,35 +37,40 @@ Brewer.MaskPhoneNumber = (function() {
 	}
 	
 	return MaskPhoneNumber;
+	
 }());
 
-Brewer.MaskCep = (function (){
+Brewer.MaskCep = (function() {
+	
 	function MaskCep() {
 		this.inputCep = $('.js-cep');
 	}
 	
-	MaskCep.prototype.enable = function (){
+	MaskCep.prototype.enable = function() {
 		this.inputCep.mask('00.000-000');
 	}
 	
 	return MaskCep;
+	
 }());
 
-Brewer.MaskDate = (function () {
-	function MaskDate(){
+Brewer.MaskDate = (function() {
+	
+	function MaskDate() {
 		this.inputDate = $('.js-date');
+	}
+	
+	MaskDate.prototype.enable = function() {
+		this.inputDate.mask('00/00/0000');
 		this.inputDate.datepicker({
 			orientation: 'bottom',
-			languague: 'pt-BR',
+			language: 'pt-BR',
 			autoclose: true
 		});
 	}
 	
-	MaskDate.prototype.enable = function (){
-		this.inputDate.mask('00/00/0000');
-	}
-	
 	return MaskDate;
+	
 }());
 
 Brewer.Security = (function() {
@@ -84,9 +90,14 @@ Brewer.Security = (function() {
 	
 }());
 
+numeral.language('pt-br');
+
 Brewer.formatarMoeda = function(valor) {
-	numeral.language('pt-br');
 	return numeral(valor).format('0,0.00');
+}
+
+Brewer.recuperarValor = function(valorFormatado) {
+	return numeral().unformat(valorFormatado);
 }
 
 $(function() {
@@ -104,4 +115,5 @@ $(function() {
 	
 //	var security = new Brewer.Security();
 //	security.enable();
+	
 });
