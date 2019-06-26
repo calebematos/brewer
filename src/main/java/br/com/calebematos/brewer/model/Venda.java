@@ -2,9 +2,12 @@ package br.com.calebematos.brewer.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,10 +43,10 @@ public class Venda implements Serializable {
 	
 	private String observacao;
 	
-	@Column(name = "data_entrega")
-	private LocalDateTime dataEntrega;
+	@Column(name = "data_hora_entrega")
+	private LocalDateTime dataHoraEntrega;
 	
-	private StatusVenda status;
+	private StatusVenda status = StatusVenda.ORCAMENTO;
 	
 	@ManyToOne
 	@JoinColumn(name = "codigo_usuario")
@@ -53,11 +56,17 @@ public class Venda implements Serializable {
 	@JoinColumn(name = "codigo_cliente")
 	private Cliente cliente;
 	
-	@OneToMany(mappedBy = "venda")
+	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
 	private List<ItemVenda> itens;
 
 	@Transient
 	private String uuid;
+	
+	@Transient
+	private LocalDate dataEntrega;
+	
+	@Transient
+	private LocalTime horarioEntrega;
 	
 	public Long getCodigo() {
 		return codigo;
@@ -107,12 +116,12 @@ public class Venda implements Serializable {
 		this.observacao = observacao;
 	}
 
-	public LocalDateTime getDataEntrega() {
-		return dataEntrega;
+	public LocalDateTime getDataHoraEntrega() {
+		return dataHoraEntrega;
 	}
 
-	public void setDataEntrega(LocalDateTime dataEntrega) {
-		this.dataEntrega = dataEntrega;
+	public void setDataHoraEntrega(LocalDateTime dataHoraEntrega) {
+		this.dataHoraEntrega = dataHoraEntrega;
 	}
 
 	public StatusVenda getStatus() {
@@ -154,7 +163,32 @@ public class Venda implements Serializable {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
+	
+	public LocalDate getDataEntrega() {
+		return dataEntrega;
+	}
 
+	public void setDataEntrega(LocalDate dataEntrega) {
+		this.dataEntrega = dataEntrega;
+	}
+
+	public LocalTime getHorarioEntrega() {
+		return horarioEntrega;
+	}
+
+	public void setHorarioEntrega(LocalTime horarioEntrega) {
+		this.horarioEntrega = horarioEntrega;
+	}
+
+	public boolean isNova() {
+		return codigo == null;
+	}
+
+	public void adicionarItens(List<ItemVenda> itens) {
+		this.itens = itens;
+		this.itens.forEach(i -> i.setVenda(this));
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

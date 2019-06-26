@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.model.ItemVenda;
+import br.com.calebematos.brewer.model.Usuario;
 import br.com.calebematos.brewer.model.Venda;
 import br.com.calebematos.brewer.service.VendaService;
 
@@ -30,6 +32,18 @@ public class VendasController {
 		venda.setUuid(UUID.randomUUID().toString());
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
 		return mv;
+	}
+	
+	@PostMapping("/nova")
+	public ModelAndView salvar(Venda venda, RedirectAttributes attributes) {
+		
+		Usuario usuario = new Usuario();
+		venda.setUsuario(usuario);
+		venda.adicionarItens(vendaService.getItens(venda.getUuid()));
+		
+		vendaService.salvar(venda);
+		attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");
+		return new ModelAndView("redirect>/vendas/nova");
 	}
 	
 	@PostMapping("/item")
