@@ -38,12 +38,13 @@ public class VendasController {
 	public ModelAndView salvar(Venda venda, RedirectAttributes attributes) {
 		
 		Usuario usuario = new Usuario();
+		usuario.setCodigo(1L);
 		venda.setUsuario(usuario);
 		venda.adicionarItens(vendaService.getItens(venda.getUuid()));
 		
 		vendaService.salvar(venda);
 		attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");
-		return new ModelAndView("redirect>/vendas/nova");
+		return new ModelAndView("redirect:/vendas/nova");
 	}
 	
 	@PostMapping("/item")

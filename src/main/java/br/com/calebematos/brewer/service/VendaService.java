@@ -5,10 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.Transient;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.model.ItemVenda;
@@ -53,7 +52,7 @@ public class VendaService {
 		return tabelaItens.getItens(uuid);
 	}
 
-	@Transient
+	@Transactional
 	public void salvar(Venda venda) {
 
 		if(venda.isNova()) {

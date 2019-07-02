@@ -29,13 +29,13 @@ public class Venda implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 
-	@Column(name = "data_descricao")
+	@Column(name = "data_criacao")
 	private LocalDateTime dataCriacao;
 	
 	@Column(name = "valor_frete")
 	private BigDecimal valorFrete;
 	
-	@Column(name = "valor_desconte")
+	@Column(name = "valor_desconto")
 	private BigDecimal valorDesconto;
 	
 	@Column(name = "valor_total")
