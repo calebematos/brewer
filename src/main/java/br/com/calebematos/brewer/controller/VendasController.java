@@ -52,23 +52,51 @@ public class VendasController {
 		return mv;
 	}
 
-	@PostMapping("/nova")
+	@PostMapping(value = "/nova", params = "salvar")
 	public ModelAndView salvar(Venda venda, BindingResult result, RedirectAttributes attributes) {
-
+		validarVenda(venda, result);
+		if (result.hasErrors()) {
+			return nova(venda);
+		}
+		
 		Usuario usuario = new Usuario();
 		usuario.setCodigo(1L);
 		venda.setUsuario(usuario);
 		
-		venda.adicionarItens(vendaService.getItens(venda.getUuid()));
-		venda.calcularValorTotal();
+		vendaService.salvar(venda);
+		attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");
+		return new ModelAndView("redirect:/vendas/nova");
+	}
 
-		vendaValidator.validate(venda, result);
+	@PostMapping(value = "/nova", params = "emitir")
+	public ModelAndView emitir(Venda venda, BindingResult result, RedirectAttributes attributes) {
+		validarVenda(venda, result);
 		if (result.hasErrors()) {
 			return nova(venda);
 		}
-
+		
+		Usuario usuario = new Usuario();
+		usuario.setCodigo(1L);
+		venda.setUsuario(usuario);
+		
+		vendaService.emitir(venda);
+		attributes.addFlashAttribute("mensagem", "Venda emitida com sucesso");
+		return new ModelAndView("redirect:/vendas/nova");
+	}
+	
+	@PostMapping(value = "/nova", params = "enviarEmail")
+	public ModelAndView enviarEmail(Venda venda, BindingResult result, RedirectAttributes attributes) {
+		validarVenda(venda, result);
+		if (result.hasErrors()) {
+			return nova(venda);
+		}
+		
+		Usuario usuario = new Usuario();
+		usuario.setCodigo(1L);
+		venda.setUsuario(usuario);
+		
 		vendaService.salvar(venda);
-		attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");
+		attributes.addFlashAttribute("mensagem", "Venda salva e e-mail enviado");
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 
@@ -89,6 +117,13 @@ public class VendasController {
 	public ModelAndView excluirItem(@PathVariable String uuid, @PathVariable("codigoCerveja") Cerveja cerveja) {
 		List<ItemVenda> itens = vendaService.excluirItem(uuid, cerveja);
 		return mvTabelaItensVenda(uuid, itens);
+	}
+	
+	private void validarVenda(Venda venda, BindingResult result) {
+		venda.adicionarItens(vendaService.getItens(venda.getUuid()));
+		venda.calcularValorTotal();
+		
+		vendaValidator.validate(venda, result);
 	}
 
 	private ModelAndView mvTabelaItensVenda(String uuid, List<ItemVenda> itens) {

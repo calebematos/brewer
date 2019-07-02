@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.model.ItemVenda;
+import br.com.calebematos.brewer.model.StatusVenda;
 import br.com.calebematos.brewer.model.Venda;
 import br.com.calebematos.brewer.repository.CervejaRepository;
 import br.com.calebematos.brewer.repository.VendaRepository;
@@ -65,6 +65,12 @@ public class VendaService {
 		}
 		
 		vendaRepository.save(venda);
+	}
+
+	@Transactional
+	public void emitir(Venda venda) {
+		venda.setStatus(StatusVenda.EMITIDA);
+		salvar(venda);
 	}
 
 }
