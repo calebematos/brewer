@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,7 @@ import br.com.calebematos.brewer.model.StatusVenda;
 import br.com.calebematos.brewer.model.Venda;
 import br.com.calebematos.brewer.repository.CervejaRepository;
 import br.com.calebematos.brewer.repository.VendaRepository;
+import br.com.calebematos.brewer.repository.filter.VendaFilter;
 import br.com.calebematos.brewer.session.TabelasItensSession;
 
 @Service
@@ -71,6 +74,10 @@ public class VendaService {
 	public void emitir(Venda venda) {
 		venda.setStatus(StatusVenda.EMITIDA);
 		salvar(venda);
+	}
+
+	public Page<Venda> filtrar(VendaFilter filtro, Pageable pageable) {
+		return vendaRepository.filtrar(filtro, pageable);
 	}
 
 }

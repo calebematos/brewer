@@ -3,7 +3,11 @@ package br.com.calebematos.brewer.controller;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -17,11 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.calebematos.brewer.controller.page.PageWrapper;
 import br.com.calebematos.brewer.controller.validator.VendaValidator;
 import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.model.ItemVenda;
+import br.com.calebematos.brewer.model.StatusVenda;
+import br.com.calebematos.brewer.model.TipoPessoa;
 import br.com.calebematos.brewer.model.Usuario;
 import br.com.calebematos.brewer.model.Venda;
+import br.com.calebematos.brewer.repository.filter.VendaFilter;
 import br.com.calebematos.brewer.service.VendaService;
 
 @Controller
@@ -34,7 +42,7 @@ public class VendasController {
 	@Autowired
 	private VendaValidator vendaValidator;
 
-	@InitBinder
+	@InitBinder("venda")
 	public void inicializarValidador(WebDataBinder binder) {
 		binder.setValidator(vendaValidator);
 	}
@@ -48,6 +56,19 @@ public class VendasController {
 		mv.addObject("valorFrete", venda.getValorFrete());
 		mv.addObject("valorDesconto", venda.getValorDesconto());
 		mv.addObject("valorTotalItens", vendaService.obterValorTotal(venda.getUuid()));
+		
+		return mv;
+	}
+	
+	@GetMapping
+	public ModelAndView pesquisar(VendaFilter filtro, BindingResult result,
+			@PageableDefault(size = 3) Pageable pageable, HttpServletRequest httpServletRequest){
+		ModelAndView mv = new ModelAndView("venda/PesquisaVendas");
+		mv.addObject("todosStatus", StatusVenda.values());
+		mv.addObject("tiposPessoa", TipoPessoa.values());
+		PageWrapper<Venda> pagina = new PageWrapper<>(vendaService.filtrar(filtro, pageable),
+				httpServletRequest);
+		mv.addObject("pagina", pagina);
 		
 		return mv;
 	}
