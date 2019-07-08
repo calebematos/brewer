@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.calebematos.brewer.controller.page.PageWrapper;
 import br.com.calebematos.brewer.controller.validator.VendaValidator;
+import br.com.calebematos.brewer.mail.Mailer;
 import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.model.ItemVenda;
 import br.com.calebematos.brewer.model.StatusVenda;
@@ -41,6 +42,9 @@ public class VendasController {
 
 	@Autowired
 	private VendaValidator vendaValidator;
+	
+	@Autowired
+	private Mailer mailer;
 
 	@InitBinder("venda")
 	public void inicializarValidador(WebDataBinder binder) {
@@ -116,8 +120,10 @@ public class VendasController {
 		usuario.setCodigo(1L);
 		venda.setUsuario(usuario);
 		
-		vendaService.salvar(venda);
-		attributes.addFlashAttribute("mensagem", "Venda salva e e-mail enviado");
+		venda = vendaService.salvar(venda);
+		mailer.enviar(venda);
+		
+		attributes.addFlashAttribute("mensagem", String.format("Venda nº%d salva e e-mail enviado", venda.getCodigo()));
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 
