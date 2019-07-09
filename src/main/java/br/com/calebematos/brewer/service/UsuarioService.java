@@ -21,14 +21,14 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
 		Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
-		if (usuarioExistente.isPresent()) {
+		if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
 			throw new UsuarioExistenteException("E-mail já cadastrado");
 		}
 
@@ -36,21 +36,31 @@ public class UsuarioService {
 			throw new SenhaObrigatoriaUsuarioException("A senha é obrigatória para novo usuário");
 		}
 
-		if (usuario.isNovo()) {
+		if (usuario.isNovo() || !StringUtils.isEmpty(usuario.getSenha())) {
 			usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-			usuario.setConfirmacaoSenha(usuario.getSenha());
+		}else if(StringUtils.isEmpty(usuario.getSenha())) {
+			usuario.setSenha(usuarioExistente.get().getSenha());
 		}
-
+		usuario.setConfirmacaoSenha(usuario.getSenha());
+		
+		if(!usuario.isNovo() && usuario.getAtivo() == null) {
+			usuario.setAtivo(usuarioExistente.get().getAtivo());
+		}
+		
 		return usuarioRepository.save(usuario);
 	}
 
 	public Page<Usuario> filtrar(UsuarioFilter filtro, Pageable pageable) {
-		
+
 		return usuarioRepository.filtrar(filtro, pageable);
 	}
 
 	@Transactional
 	public void alterarStatus(Long[] codigos, StatusUsuario statusUsuario) {
 		statusUsuario.executar(codigos, usuarioRepository);
+	}
+
+	public Usuario buscarComGrupos(Long codigo) {
+		return usuarioRepository.buscarComGrupos(codigo);
 	}
 }

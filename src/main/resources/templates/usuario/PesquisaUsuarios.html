@@ -104,7 +104,7 @@
 						</td>
 						<td th:text="${usuario.ativo} ? Ativo : Inativo"></td>
 						<td class="text-center">
-							<a class="btn  btn-link  btn-xs" title="Editar"> 
+							<a class="btn  btn-link  btn-xs" title="Editar" th:ref="@{/usuarios/{codigo}(codigo=${usuario.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>
 							<a class="btn  btn-link  btn-xs" title="Excluir">
