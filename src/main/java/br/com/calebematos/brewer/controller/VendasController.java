@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,7 +43,7 @@ public class VendasController {
 
 	@Autowired
 	private VendaValidator vendaValidator;
-	
+
 	@Autowired
 	private Mailer mailer;
 
@@ -53,27 +54,27 @@ public class VendasController {
 
 	@GetMapping("/nova")
 	public ModelAndView nova(Venda venda) {
-		venda.setUuid(UUID.randomUUID().toString());
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
-		
+		if (StringUtils.isEmpty(venda.getUuid()))
+			venda.setUuid(UUID.randomUUID().toString());
+
 		mv.addObject("itens", venda.getItens());
 		mv.addObject("valorFrete", venda.getValorFrete());
 		mv.addObject("valorDesconto", venda.getValorDesconto());
 		mv.addObject("valorTotalItens", vendaService.obterValorTotal(venda.getUuid()));
-		
+
 		return mv;
 	}
-	
+
 	@GetMapping
 	public ModelAndView pesquisar(VendaFilter filtro, BindingResult result,
-			@PageableDefault(size = 3) Pageable pageable, HttpServletRequest httpServletRequest){
+			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("venda/PesquisaVendas");
 		mv.addObject("todosStatus", StatusVenda.values());
 		mv.addObject("tiposPessoa", TipoPessoa.values());
-		PageWrapper<Venda> pagina = new PageWrapper<>(vendaService.filtrar(filtro, pageable),
-				httpServletRequest);
+		PageWrapper<Venda> pagina = new PageWrapper<>(vendaService.filtrar(filtro, pageable), httpServletRequest);
 		mv.addObject("pagina", pagina);
-		
+
 		return mv;
 	}
 
@@ -83,11 +84,11 @@ public class VendasController {
 		if (result.hasErrors()) {
 			return nova(venda);
 		}
-		
+
 		Usuario usuario = new Usuario();
 		usuario.setCodigo(1L);
 		venda.setUsuario(usuario);
-		
+
 		vendaService.salvar(venda);
 		attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");
 		return new ModelAndView("redirect:/vendas/nova");
@@ -99,30 +100,30 @@ public class VendasController {
 		if (result.hasErrors()) {
 			return nova(venda);
 		}
-		
+
 		Usuario usuario = new Usuario();
 		usuario.setCodigo(1L);
 		venda.setUsuario(usuario);
-		
+
 		vendaService.emitir(venda);
 		attributes.addFlashAttribute("mensagem", "Venda emitida com sucesso");
 		return new ModelAndView("redirect:/vendas/nova");
 	}
-	
+
 	@PostMapping(value = "/nova", params = "enviarEmail")
 	public ModelAndView enviarEmail(Venda venda, BindingResult result, RedirectAttributes attributes) {
 		validarVenda(venda, result);
 		if (result.hasErrors()) {
 			return nova(venda);
 		}
-		
+
 		Usuario usuario = new Usuario();
 		usuario.setCodigo(1L);
 		venda.setUsuario(usuario);
-		
+
 		venda = vendaService.salvar(venda);
 		mailer.enviar(venda);
-		
+
 		attributes.addFlashAttribute("mensagem", String.format("Venda nº%d salva e e-mail enviado", venda.getCodigo()));
 		return new ModelAndView("redirect:/vendas/nova");
 	}
@@ -145,11 +146,28 @@ public class VendasController {
 		List<ItemVenda> itens = vendaService.excluirItem(uuid, cerveja);
 		return mvTabelaItensVenda(uuid, itens);
 	}
-	
+
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable Long codigo) {
+		Venda venda = vendaService.buscarComItens(codigo);
+		ModelAndView mv = nova(venda);
+		mv.addObject(venda);
+		return mv;
+	}
+
+	@PostMapping(value = "/nova", params = "cancelar")
+	public ModelAndView cancelar(Venda venda, BindingResult result, RedirectAttributes attributes) {
+		vendaService.cancelar(venda);
+
+		attributes.addFlashAttribute("mensagem", "Venda cancelada com sucesso");
+		ModelAndView mv = new ModelAndView("redirect:/vendas/" + venda.getCodigo());
+		return mv;
+	}
+
 	private void validarVenda(Venda venda, BindingResult result) {
 		venda.adicionarItens(vendaService.getItens(venda.getUuid()));
 		venda.calcularValorTotal();
-		
+
 		vendaValidator.validate(venda, result);
 	}
 

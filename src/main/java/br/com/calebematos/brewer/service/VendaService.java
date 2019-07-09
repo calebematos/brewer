@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -61,6 +62,9 @@ public class VendaService {
 
 		if(venda.isNova()) {
 			venda.setDataCriacao(LocalDateTime.now());
+		}else {
+			Venda vendaExistente = vendaRepository.findOne(venda.getCodigo());
+			venda.setDataCriacao(vendaExistente.getDataCriacao());
 		}
 		
 		if(venda.getDataEntrega() != null) {
@@ -78,6 +82,24 @@ public class VendaService {
 
 	public Page<Venda> filtrar(VendaFilter filtro, Pageable pageable) {
 		return vendaRepository.filtrar(filtro, pageable);
+	}
+
+	public Venda buscarComItens(Long codigo) {
+		Venda venda = vendaRepository.buscarComItens(codigo);
+		venda.setUuid(UUID.randomUUID().toString());
+		for(ItemVenda iten : venda.getItens()) {
+			tabelaItens.adicionarItem(venda.getUuid(), iten.getCerveja(), iten.getQuantidade());
+		}
+		
+		return venda;
+	}
+
+	@Transactional
+	public void cancelar(Venda venda) {
+		Venda vendaExistente = vendaRepository.findOne(venda.getCodigo());
+		vendaExistente.setStatus(StatusVenda.CANCELADA);
+		vendaRepository.save(vendaExistente);
+		
 	}
 
 }

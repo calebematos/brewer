@@ -9,4 +9,6 @@ import br.com.calebematos.brewer.repository.filter.VendaFilter;
 public interface VendaRepositoryQuery {
 
 	public Page<Venda> filtrar(VendaFilter filtro, Pageable pageable);
+	
+	Venda buscarComItens(Long codigo);
 }
