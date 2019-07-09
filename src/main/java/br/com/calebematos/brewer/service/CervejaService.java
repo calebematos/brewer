@@ -2,6 +2,8 @@ package br.com.calebematos.brewer.service;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,8 @@ import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.repository.CervejaRepository;
 import br.com.calebematos.brewer.repository.filter.CervejaFilter;
 import br.com.calebematos.brewer.service.event.cerveja.CervejaSalvaEvent;
+import br.com.calebematos.brewer.service.exception.ImpossivelEcluirEntidadeException;
+import br.com.calebematos.brewer.storage.FotoStorage;
 
 @Service
 public class CervejaService {
@@ -23,6 +27,9 @@ public class CervejaService {
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
+	
+	@Autowired
+	private FotoStorage fotoStorage;
 
 	@Transactional
 	public void salvar(Cerveja cerveja) {
@@ -38,5 +45,17 @@ public class CervejaService {
 
 	public List<CervejaDTO> pesquisar(String skuOuNome) {
 		return cervejaRepository.pesquisarPorNomeOuSku(skuOuNome);
+	}
+
+	@Transactional
+	public void excluir(Cerveja cerveja) {
+		try {
+			String foto = cerveja.getFoto();
+			cervejaRepository.delete(cerveja);
+			cervejaRepository.flush();
+			fotoStorage.excluir(foto);
+		} catch (PersistenceException e) {
+			throw new ImpossivelEcluirEntidadeException("Impossível apagar cerveja. Já foi usada em alguma venda.");
+		}
 	}
 }

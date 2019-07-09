@@ -84,6 +84,9 @@ public class Cerveja implements Serializable {
 
 	@Column(name = "content_type")
 	private String contentType;
+	
+	@Transient
+	private boolean novaFoto;
 
 	@PrePersist
 	@PreUpdate
@@ -202,6 +205,18 @@ public class Cerveja implements Serializable {
 	
 	public boolean temFoto() {		
 		return !StringUtils.isEmpty(foto);
+	}
+	
+	public boolean isNova() {
+		return this.codigo == null;
+	}
+
+	public boolean isNovaFoto() {
+		return novaFoto;
+	}
+
+	public void setNovaFoto(boolean novaFoto) {
+		this.novaFoto = novaFoto;
 	}
 
 	@Override
