@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import br.com.calebematos.brewer.dto.CervejaDTO;
+import br.com.calebematos.brewer.dto.ValorItensEstoque;
 import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.repository.filter.CervejaFilter;
 import br.com.calebematos.brewer.repository.paginacao.PaginacaoUtil;
@@ -26,7 +27,7 @@ public class CervejaRepositoryImpl implements CervejaRepositoryQuery {
 
 	@PersistenceContext
 	private EntityManager manager;
-	
+
 	@Autowired
 	private PaginacaoUtil paginacaoUtil;
 
@@ -40,6 +41,13 @@ public class CervejaRepositoryImpl implements CervejaRepositoryQuery {
 		adicionarFiltro(filtro, criteria);
 
 		return new PageImpl<>(criteria.list(), pageable, total(filtro));
+	}
+
+	@Override
+	public ValorItensEstoque valorItensEstoque() {
+		String query = "select new br.com.calebematos.brewer.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Cerveja";
+		return manager.createQuery(query, ValorItensEstoque.class).getSingleResult();
+
 	}
 
 	private Long total(CervejaFilter filtro) {
@@ -84,14 +92,13 @@ public class CervejaRepositoryImpl implements CervejaRepositoryQuery {
 	private boolean isEstiloPresente(CervejaFilter filtro) {
 		return filtro.getEstilo() != null && filtro.getEstilo().getCodigo() != null;
 	}
-	
+
 	@Override
 	public List<CervejaDTO> pesquisarPorNomeOuSku(String skuOuNome) {
 		String jpql = "select new br.com.calebematos.brewer.dto.CervejaDTO(codigo, sku, nome, origem, valor, foto) "
 				+ "from Cerveja where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome)";
 		List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql, CervejaDTO.class)
-				.setParameter("skuOuNome", skuOuNome + "%")
-				.getResultList();
+				.setParameter("skuOuNome", skuOuNome + "%").getResultList();
 		return cervejasFiltradas;
 	}
 }

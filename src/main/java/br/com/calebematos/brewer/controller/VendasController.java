@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.calebematos.brewer.controller.page.PageWrapper;
 import br.com.calebematos.brewer.controller.validator.VendaValidator;
+import br.com.calebematos.brewer.dto.VendaMes;
+import br.com.calebematos.brewer.dto.VendaOrigem;
 import br.com.calebematos.brewer.mail.Mailer;
 import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.model.ItemVenda;
@@ -162,6 +165,16 @@ public class VendasController {
 		attributes.addFlashAttribute("mensagem", "Venda cancelada com sucesso");
 		ModelAndView mv = new ModelAndView("redirect:/vendas/" + venda.getCodigo());
 		return mv;
+	}
+	
+	@GetMapping("/totalPorMes")
+	public @ResponseBody List<VendaMes> listarTotalVendaPorMes(){
+		return vendaService.listarTotalVendaPorMes();
+	}
+	
+	@GetMapping("/porOrigem")
+	public @ResponseBody List<VendaOrigem> listarTotalVendaPorOrigem(){
+		return vendaService.listarTotalVendaPorOrigem();
 	}
 
 	private void validarVenda(Venda venda, BindingResult result) {

@@ -6,14 +6,15 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.calebematos.brewer.dto.VendaMes;
+import br.com.calebematos.brewer.dto.VendaOrigem;
 import br.com.calebematos.brewer.model.Cerveja;
 import br.com.calebematos.brewer.model.ItemVenda;
 import br.com.calebematos.brewer.model.StatusVenda;
@@ -21,6 +22,7 @@ import br.com.calebematos.brewer.model.Venda;
 import br.com.calebematos.brewer.repository.CervejaRepository;
 import br.com.calebematos.brewer.repository.VendaRepository;
 import br.com.calebematos.brewer.repository.filter.VendaFilter;
+import br.com.calebematos.brewer.service.event.venda.VendaEvent;
 import br.com.calebematos.brewer.session.TabelasItensSession;
 
 @Service
@@ -34,6 +36,9 @@ public class VendaService {
 	
 	@Autowired
 	private VendaRepository vendaRepository;
+	
+	@Autowired
+	private ApplicationEventPublisher publisher;
 
 	public List<ItemVenda> adicionarItem(String uuid, Long codigoCerveja) {
 		Cerveja cerveja = cervejaRepository.findOne(codigoCerveja);
@@ -82,6 +87,8 @@ public class VendaService {
 	public void emitir(Venda venda) {
 		venda.setStatus(StatusVenda.EMITIDA);
 		salvar(venda);
+		
+		publisher.publishEvent(new VendaEvent(venda));
 	}
 
 	public Page<Venda> filtrar(VendaFilter filtro, Pageable pageable) {
@@ -104,6 +111,14 @@ public class VendaService {
 		vendaExistente.setStatus(StatusVenda.CANCELADA);
 		vendaRepository.save(vendaExistente);
 		
+	}
+
+	public List<VendaMes> listarTotalVendaPorMes() {
+		return vendaRepository.totalPorMes();
+	}
+
+	public List<VendaOrigem> listarTotalVendaPorOrigem() {
+		return vendaRepository.totalPorOrigem();
 	}
 
 }
