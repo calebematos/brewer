@@ -211,6 +211,14 @@ public class Venda implements Serializable {
 		return ChronoUnit.DAYS.between(inicio, LocalDate.now());
 	}
 	
+	public boolean isSalvarPermitido() {
+		return !status.equals(StatusVenda.CANCELADA);
+	}
+	
+	public boolean isSalvarProibido() {
+		return !isSalvarPermitido();
+	}
+	
 	private BigDecimal calcularValorTotal(BigDecimal valorTotalItens, BigDecimal valorFrete, BigDecimal valorDesconto) {
 		BigDecimal valorTotal = valorTotalItens
 				.add(Optional.ofNullable(valorFrete).orElse(BigDecimal.ZERO))

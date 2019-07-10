@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,7 +61,9 @@ public class VendaService {
 
 	@Transactional
 	public Venda salvar(Venda venda) {
-
+		if(venda.isSalvarProibido()) {
+			throw new RuntimeException("Usuário tentando salvar uma venda cancelada");
+		}
 		if(venda.isNova()) {
 			venda.setDataCriacao(LocalDateTime.now());
 		}else {
