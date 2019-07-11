@@ -17,7 +17,7 @@ import javax.validation.constraints.Pattern;
 public @interface SKU {
 
 	@OverridesAttribute(constraint=Pattern.class, name="message")
-	String message() default "O SKU deve seguir o padrão XX9999";
+	String message() default "{br.com.calebematos.constraints.SKU.message}";
 	
 	Class<?>[] groups() default {};
 	Class<? extends Payload>[] payload() default {};
