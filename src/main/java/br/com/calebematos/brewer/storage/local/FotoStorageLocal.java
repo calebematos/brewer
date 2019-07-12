@@ -10,12 +10,14 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.calebematos.brewer.storage.FotoStorage;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
 
+@Component
 public class FotoStorageLocal implements FotoStorage {
 
 	private static final String THUMBNAIL_PREFIX = "thumbnail.";

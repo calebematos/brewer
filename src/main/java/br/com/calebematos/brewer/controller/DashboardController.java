@@ -15,8 +15,10 @@ public class DashboardController {
 	@Autowired
 	private VendaRepository vendaRepository;
 	
+	@Autowired
 	private CervejaRepository cervejaRepository;
 	
+	@Autowired
 	private ClienteRepository clienteRepository;
 	
 	@GetMapping("/")

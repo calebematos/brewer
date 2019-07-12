@@ -1,10 +1,12 @@
 package br.com.calebematos.brewer.converter;
 
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
 
 import br.com.calebematos.brewer.model.Estado;
 
+@Component
 public class EstadoConverter implements Converter<String, Estado> {
 
 	@Override

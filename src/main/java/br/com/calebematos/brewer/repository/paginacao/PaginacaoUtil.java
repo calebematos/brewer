@@ -18,7 +18,7 @@ public class PaginacaoUtil {
 		criteria.setFirstResult(primeiroRegistro);
 
 		Sort sort = pageable.getSort();
-		if (sort != null) {
+		if (sort != null && sort.isSorted()) {
 			Sort.Order order = sort.iterator().next();
 			String propriedade = order.getProperty();
 			criteria.addOrder(order.isAscending() ? Order.asc(propriedade) : Order.desc(propriedade));

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,8 @@ public class VendaService {
 	private ApplicationEventPublisher publisher;
 
 	public List<ItemVenda> adicionarItem(String uuid, Long codigoCerveja) {
-		Cerveja cerveja = cervejaRepository.findOne(codigoCerveja);
-		tabelaItens.adicionarItem(uuid, cerveja, 1);
+		Optional<Cerveja> cervejaOpt = cervejaRepository.findById(codigoCerveja);
+		tabelaItens.adicionarItem(uuid, cervejaOpt.get(), 1);
 		return tabelaItens.getItens(uuid);
 	}
 
@@ -72,8 +73,8 @@ public class VendaService {
 		if(venda.isNova()) {
 			venda.setDataCriacao(LocalDateTime.now());
 		}else {
-			Venda vendaExistente = vendaRepository.findOne(venda.getCodigo());
-			venda.setDataCriacao(vendaExistente.getDataCriacao());
+			Optional<Venda> vendaExistente = vendaRepository.findById(venda.getCodigo());
+			venda.setDataCriacao(vendaExistente.get().getDataCriacao());
 		}
 		
 		if(venda.getDataEntrega() != null) {
@@ -107,9 +108,12 @@ public class VendaService {
 
 	@Transactional
 	public void cancelar(Venda venda) {
-		Venda vendaExistente = vendaRepository.findOne(venda.getCodigo());
-		vendaExistente.setStatus(StatusVenda.CANCELADA);
-		vendaRepository.save(vendaExistente);
+		Optional<Venda> vendaExistenteOpt = vendaRepository.findById(venda.getCodigo());
+		if(vendaExistenteOpt.isPresent()) {
+			Venda vendaExistente = vendaExistenteOpt.get();
+			vendaExistente.setStatus(StatusVenda.CANCELADA);
+			vendaRepository.save(vendaExistente);
+		}
 		
 	}
 

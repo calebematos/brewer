@@ -1,16 +1,15 @@
 package br.com.calebematos.brewer.config.format;
 
-import java.math.BigDecimal;
 import java.util.Locale;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class BigDecimalFormatter extends NumberFormatter<BigDecimal> {
+public class IntegerlFormatter extends NumberFormatter<Integer> {
 
 	@Override
 	public String pattern(Locale locale) {
-		return "#,##0.00";
+		return "#,##0";
 	}
 
 }
