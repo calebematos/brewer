@@ -31,7 +31,7 @@ public class CervejaRepositoryImpl implements CervejaRepositoryQuery {
 	@Autowired
 	private PaginacaoUtil paginacaoUtil;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	@Transactional(readOnly = true)
 	public Page<Cerveja> filtrar(CervejaFilter filtro, Pageable pageable) {
@@ -45,11 +45,12 @@ public class CervejaRepositoryImpl implements CervejaRepositoryQuery {
 
 	@Override
 	public ValorItensEstoque valorItensEstoque() {
-		String query = "select new br.com.calebematos.brewer.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Cerveja";
+		String query = "select new br.com.calebematos.brewer.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), COALESCE(sum(quantidadeEstoque),0) ) from Cerveja";
 		return manager.createQuery(query, ValorItensEstoque.class).getSingleResult();
 
 	}
 
+	@SuppressWarnings("deprecation")
 	private Long total(CervejaFilter filtro) {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Cerveja.class);
 		adicionarFiltro(filtro, criteria);

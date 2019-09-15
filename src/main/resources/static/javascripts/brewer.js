@@ -115,7 +115,7 @@ $(function() {
 	var maskDate = new Brewer.MaskDate();
 	maskDate.enable();
 	
-//	var security = new Brewer.Security();
-//	security.enable();
+	var security = new Brewer.Security();
+	security.enable();
 	
 });
