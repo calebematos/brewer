@@ -2,11 +2,11 @@ package br.com.calebematos.brewer.model;
 
 public enum Sabor {
 
-	ADOCICADA("Adocicada"),
-	AMARGA("Armaga"),
-	FORTE("Forte"),
-	FRUTADA("Frutada"),
-	SUAVE("Suave");
+	ADOCICADA("sabor.adocicada"),
+	AMARGA("sabor.amarga"),
+	FORTE("sabor.forte"),
+	FRUTADA("sabor.frutada"),
+	SUAVE("sabor.suave");
 
 	private String descricao;
 

@@ -108,7 +108,7 @@
 						<td th:text="${{venda.dataCriacao}}"></td>
 						<td th:text="|R$ ${{venda.valorTotal}}|"></td>
 						<td th:text="${venda.usuario.nome}"></td>
-						<td th:text="${venda.status.descricao}"></td>
+						<td th:text="#{${venda.status.descricao}}"></td>
 	                 	<td class="text-center">
 		   					<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" 
 		   						th:href="@{/vendas/{codigo}(codigo=${venda.codigo})}">

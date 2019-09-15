@@ -2,9 +2,10 @@ package br.com.calebematos.brewer.model;
 
 public enum StatusVenda {
 
-	ORCAMENTO("Orçamento"), 
-	EMITIDA("Emitida"), 
-	CANCELADA("Cancelada");
+	ORCAMENTO("status.orcamento"), 
+	EMITIDA("status.emitida"), 
+	CANCELADA("status.cancelada");
+
 	
 	private String descricao;
 

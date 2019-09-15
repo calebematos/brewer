@@ -2,8 +2,8 @@ package br.com.calebematos.brewer.model;
 
 public enum Origem {
 
-	NACIONAL("Nacional"), 
-	INTERNACIONAL("Internacional");
+	NACIONAL("origem.nacional"), 
+	INTERNACIONAL("origem.internacional");
 
 	private String descricao;
 

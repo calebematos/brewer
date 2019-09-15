@@ -16,16 +16,16 @@
 	        
 	        <li class="aw-menu__item">
 	          <a href="#">
-	            <i class="fa  fa-fw  fa-credit-card"></i><span>Vendas</span>
+	            <i class="fa  fa-fw  fa-credit-card"></i><span th:text="#{menu.vendas}">Vendas</span>
 	            <i class="aw-menu__navigation-icon  fa"></i>
 	          </a>
 	      
 	          <ul class="aw-menu__list  aw-menu__list--sublist">
 	            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas/nova.+}">
-	            	<a th:href="@{/vendas/nova}">Cadastro venda</a>
+	            	<a th:href="@{/vendas/nova}" th:text="#{menu.cadastro-venda}">Cadastro venda</a>
 	            </li>
 	            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas}">
-	            	<a th:href="@{/vendas}">Pesquisa de vendas</a>
+	            	<a th:href="@{/vendas}" th:text="#{menu.pesquisa-vendas}">Pesquisa de vendas</a>
 	            </li>
 	          </ul>
 	        </li>
@@ -33,35 +33,35 @@
 	
 	        <li class="aw-menu__item">
 	          <a href="#">
-	            <i class="fa  fa-fw  fa-truck"></i><span>Estoque</span>
+	            <i class="fa  fa-fw  fa-truck"></i><span th:text="#{menu.estoque}">Estoque</span>
 	            <i class="aw-menu__navigation-icon  fa"></i>
 	          </a>
 	      
 	          <ul class="aw-menu__list  aw-menu__list--sublist">
 	            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/estilos.*}">
-	            	<a th:href="@{/estilos}">Estilos</a>
+	            	<a th:href="@{/estilos}" th:text="#{menu.estilos}">Estilos</a>
 	            </li>
 	            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cervejas.*}">
-	            	<a th:href="@{/cervejas}">Cervejas</a>
+	            	<a th:href="@{/cervejas}" th:text="#{menu.cervejas}">Cervejas</a>
 	            </li>
 	          </ul>
 	        </li>
 	
 	        <li class="aw-menu__item">
 	          <a href="#">
-	            <i class="fa  fa-fw  fa-database"></i><span>Cadastros</span>
+	            <i class="fa  fa-fw  fa-database"></i><span th:text="#{menu.cadastros}">Cadastros</span>
 	            <i class="aw-menu__navigation-icon  fa"></i>
 	          </a>
 	
 	          <ul class="aw-menu__list  aw-menu__list--sublist">
 	            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/cidades.*}">
-	            	<a th:href="@{/cidades}">Cidades</a>
+	            	<a th:href="@{/cidades}" th:text="#{menu.cidades}">Cidades</a>
 	            </li>
 	            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/clientes.*}">
-	            	<a th:href="@{/clientes}">Clientes</a>
+	            	<a th:href="@{/clientes}" th:text="#{menu.cliente}">Clientes</a>
 	            </li>
 	            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/usuarios.*}">
-	            	<a th:href="@{/usuarios}">Usuários</a>
+	            	<a th:href="@{/usuarios}" th:text="#{menu.usuarios}">Usuários</a>
 	            </li>
 	          </ul>
 	        </li>

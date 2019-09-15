@@ -206,7 +206,7 @@ public class Venda implements Serializable {
 		this.valorTotal = calcularValorTotal(getValorTotalItens(), getValorFrete(), getValorDesconto());
 	}
 	
-	public Long diasCriacao() {
+	public Long getDiasCriacao() {
 		LocalDate inicio = dataCriacao != null ? dataCriacao.toLocalDate() : LocalDate.now();
 		return ChronoUnit.DAYS.between(inicio, LocalDate.now());
 	}

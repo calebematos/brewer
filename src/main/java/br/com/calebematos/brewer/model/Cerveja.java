@@ -38,44 +38,44 @@ public class Cerveja implements Serializable {
 	private Long codigo;
 
 	@SKU
-	@NotBlank(message = "SKU é obrigatório")
+	@NotBlank
 	private String sku;
 
-	@NotBlank(message = "Nome é obrigatório")
+	@NotBlank
 	private String nome;
 
 	@NotBlank
 	@Size(min = 1, max = 50, message = "O tamanho da descrição deve ser entre 1 e 50")
 	private String descricao;
 
-	@NotNull(message = "O valor é obrigatório")
+	@NotNull
 	@DecimalMin("0.01")
-	@DecimalMax(value = "999999.99", message = "O valor da cerveja deve ser menor que R$ 999.999,99")
+	@DecimalMax(value = "999999.99", message = "{cerveja.valor.maximo}")
 	private BigDecimal valor;
 
-	@NotNull(message = "O teor alcoolico é obrigatório")
-	@DecimalMax(value = "100", message = "O valor do teor alcoolico deve ser menor que 100")
+	@NotNull
+	@DecimalMax(value = "100", message = "{cerveja.teor-alcoolico.maximo}")
 	@Column(name = "teor_alcoolico")
 	private BigDecimal teorAlcoolico;
 
-	@NotNull(message = "A comissão é obrigatória")
-	@DecimalMax(value = "100", message = "A comissão deve ser igual ou menor que 100")
+	@NotNull
+	@DecimalMax(value = "100", message = "{cerveja.comissao.maximo}")
 	private BigDecimal comissao;
 
-	@NotNull(message = "A quantidade de estoque é obrigatória")
-	@Max(value = 9999, message = "A quantidade em estoque deve ser menor que 9.999")
+	@NotNull
+	@Max(value = 9999, message = "{cerveja.quantidade-estoque.maximo}")
 	@Column(name = "quantidade_estoque")
 	private Integer quantidadeEstoque;
 
-	@NotNull(message = "O sabor é obrigatório")
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Sabor sabor;
 
-	@NotNull(message = "A origem é obrigatória")
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Origem origem;
 
-	@NotNull(message = "O estilo é obrigatório")
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_estilo")
 	private Estilo estilo;
