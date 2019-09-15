@@ -11,7 +11,14 @@
   	<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/vendors.min.css}"/>
 	<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/algaworks.min.css}"/>
 	<link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/application.css}"/>
-
+	<style type="text/css">
+	  .opcoes {
+		border: 1px solid red; 
+		width: 200px; 
+		margin: 10px 10px; 
+		padding: 11px;
+	  }
+	</style>
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -21,9 +28,17 @@
 </head>
 
 <body class="aw-layout-simple-page">
+
+<div class="opcoes">
+  <h4> Opções de login:</h4>
+  Usuario: admin@brewer.com <br>
+  Senha: admin <br> <br>
+
+</div>
+
   <div class="aw-layout-simple-page__container">
 
-<form th:action="@{/login}" method="POST">
+  <form th:action="@{/login}" method="POST">
 	<div class="aw-simple-panel">
 		<img alt="Brewer" th:src="@{/images/logo-gray.png}"/>
 		
